@@ -133,8 +133,8 @@ FlarmTrafficControl::OnCreate() noexcept
   Profile::GetEnum(ProfileKeys::FlarmSideData, side_display_type);
   enable_auto_zoom = settings.auto_zoom;
   enable_north_up = settings.north_up;
-  SetAutoZoom(true);
-  CalcAutoZoom();
+  SetAutoZoom(false);
+  SetZoom(4);
 }
 
 unsigned
