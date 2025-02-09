@@ -330,9 +330,9 @@ FlarmTrafficWindow::PaintRadarTarget(Canvas &canvas,
       target_pen = &look.radar_pen;
       arrow_brush = &look.default_brush;
 
-      if (traffic.relative_altitude > (const RoughAltitude)100) {
+      if (traffic.relative_altitude > (const RoughAltitude)50) {
         target_brush = &look.safe_above_brush;
-      } else if (traffic.relative_altitude > (const RoughAltitude)-100) {
+      } else if (traffic.relative_altitude > (const RoughAltitude)-50) {
         target_brush = &look.warning_in_altitude_range_brush;
       } else {
         target_brush = &look.safe_below_brush;
@@ -387,15 +387,8 @@ FlarmTrafficWindow::PaintRadarTarget(Canvas &canvas,
   else
     canvas.Select(*target_brush);
 
-  if (!traffic.relative_east) {
-    // Draw circle (Mode-S Transponder)
-    if (small)
-      canvas.DrawCircle(sc[i],10);
-    else
-      canvas.DrawCircle(sc[i],18);
-  } else
-    // Draw the polygon
-    canvas.DrawPolygon(Arrow, 4);
+  // Draw the polygon
+  canvas.DrawPolygon(Arrow, 4);
 
   if (small) {
     if (!WarningMode() || traffic.HasAlarm())
@@ -423,7 +416,7 @@ FlarmTrafficWindow::PaintRadarTarget(Canvas &canvas,
   TCHAR tmp[10];
 
   if (side_display_type == SideInfoType::VARIO)
-    tmp[0] = '\0';
+    FormatUserVerticalSpeed(traffic.climb_rate_avg30s, tmp, false);
   else
     FormatRelativeUserAltitude(traffic.relative_altitude, tmp, true);
 
