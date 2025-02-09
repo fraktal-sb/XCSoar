@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright The XCSoar Project
-
 #include "MainWindow.hpp"
 #include "MapWindow/GlueMapWindow.hpp"
 #include "PopupMessage.hpp"
@@ -213,7 +212,7 @@ MainWindow::InitialiseConfigured()
   map->Create(*this, map_rect);
 
   popup = new PopupMessage(*this, look->dialog, ui_settings);
-  popup->Create(rc);
+  popup->Create(map_rect);
 }
 
 void
@@ -329,7 +328,7 @@ MainWindow::ReinitialiseLayout() noexcept
   InfoBoxManager::ProcessTimer();
   map_rect = ib_layout.remaining;
 
-  popup->UpdateLayout(rc);
+  popup->UpdateLayout(map_rect);
 
   ReinitialiseLayout_vario(ib_layout);
 
