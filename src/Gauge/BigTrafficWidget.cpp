@@ -236,6 +236,7 @@ FlarmTrafficControl::ZoomOut()
   if (WarningMode())
     return;
 
+  init_defaults = false;
   if (zoom < num_zoom_options)
     SetZoom(zoom + 1);
 
@@ -251,6 +252,7 @@ FlarmTrafficControl::ZoomIn()
   if (WarningMode())
     return;
 
+  init_defaults = false;
   if (zoom > 0)
     SetZoom(zoom - 1);
 
