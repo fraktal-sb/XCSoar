@@ -31,8 +31,9 @@
 class FlarmTrafficControl : public FlarmTrafficWindow {
 protected:
   bool enable_auto_zoom = true, dragging = false;
-  bool init_defaults = false;
   unsigned zoom = 3;
+  bool init_defaults = false;
+  unsigned last_zoom = 4;
   static constexpr unsigned num_zoom_options = 5;
   Angle task_direction = Angle::Degrees(-1);
   GestureManager gestures;
@@ -134,8 +135,7 @@ FlarmTrafficControl::OnCreate() noexcept
   Profile::GetEnum(ProfileKeys::FlarmSideData, side_display_type);
   enable_auto_zoom = settings.auto_zoom;
   enable_north_up = settings.north_up;
-  SetAutoZoom(false);
-  SetZoom(4);
+  SetZoom(last_zoom);
 }
 
 unsigned
@@ -206,6 +206,8 @@ FlarmTrafficControl::Update(Angle new_direction, const TrafficList &new_data,
   FlarmTrafficWindow::Update(new_direction, new_data, new_settings);
 
   if (enable_auto_zoom || WarningMode()) {
+    if(!init_defaults)
+      last_zoom = zoom;
     CalcAutoZoom();
     init_defaults = true;
   } else {
@@ -214,7 +216,6 @@ FlarmTrafficControl::Update(Angle new_direction, const TrafficList &new_data,
       init_defaults = false;
     }
   }
-
 }
 
 void
