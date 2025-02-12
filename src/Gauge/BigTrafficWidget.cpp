@@ -31,8 +31,8 @@
 class FlarmTrafficControl : public FlarmTrafficWindow {
 protected:
   bool enable_auto_zoom = true, dragging = false;
-  unsigned zoom = 3;
   bool init_defaults = false;
+  unsigned zoom = 3;
   unsigned last_zoom = 4;
   static constexpr unsigned num_zoom_options = 5;
   Angle task_direction = Angle::Degrees(-1);
@@ -206,7 +206,7 @@ FlarmTrafficControl::Update(Angle new_direction, const TrafficList &new_data,
   FlarmTrafficWindow::Update(new_direction, new_data, new_settings);
 
   if (enable_auto_zoom || WarningMode()) {
-    if(!init_defaults)
+    if (!init_defaults)
       last_zoom = zoom;
     CalcAutoZoom();
     init_defaults = true;
