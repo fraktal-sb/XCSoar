@@ -74,6 +74,8 @@ public:
 
   void SetAutoZoom(bool enabled);
 
+  void SaveZoom(unsigned value);
+
   void ToggleAutoZoom() {
     SetAutoZoom(!GetAutoZoom());
   }
@@ -135,6 +137,9 @@ FlarmTrafficControl::OnCreate() noexcept
   Profile::GetEnum(ProfileKeys::FlarmSideData, side_display_type);
   enable_auto_zoom = settings.auto_zoom;
   enable_north_up = settings.north_up;
+  if (settings.radar_zoom)
+    last_zoom = settings.radar_zoom;
+
   SetZoom(last_zoom);
 }
 
@@ -177,6 +182,15 @@ FlarmTrafficControl::SetAutoZoom(bool enabled)
 }
 
 void
+FlarmTrafficControl::SaveZoom(unsigned zoom_value)
+{
+  TrafficSettings &settings = CommonInterface::SetUISettings().traffic;
+  settings.radar_zoom = zoom_value;
+  Profile::Set(ProfileKeys::FlarmRadarZoom, zoom_value);
+  //last zoom value in Flarm radar
+}
+
+void
 FlarmTrafficControl::CalcAutoZoom()
 {
   bool warning_mode = WarningMode();
@@ -207,7 +221,7 @@ FlarmTrafficControl::Update(Angle new_direction, const TrafficList &new_data,
 
   if (enable_auto_zoom || WarningMode()) {
     if (!init_defaults)
-      last_zoom = zoom;
+      SaveZoom(zoom);
     CalcAutoZoom();
     init_defaults = true;
   } else {
@@ -236,10 +250,11 @@ FlarmTrafficControl::ZoomOut()
   if (WarningMode())
     return;
 
-  init_defaults = false;
   if (zoom < num_zoom_options)
     SetZoom(zoom + 1);
 
+  SaveZoom(zoom);
+  init_defaults = false;
   SetAutoZoom(false);
 }
 
@@ -252,10 +267,11 @@ FlarmTrafficControl::ZoomIn()
   if (WarningMode())
     return;
 
-  init_defaults = false;
   if (zoom > 0)
     SetZoom(zoom - 1);
 
+  SaveZoom(zoom);
+  init_defaults = false;
   SetAutoZoom(false);
 }
 
