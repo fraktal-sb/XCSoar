@@ -19,7 +19,7 @@ static constexpr const TCHAR *acTypes[] = {
   _T("Airship"),
   _T("UAV"),
   _T("Unknown"),
-  _T("StaticObject") 
+  _T("StaticObject")
 };
 
 const TCHAR *
@@ -49,4 +49,6 @@ FlarmTraffic::Update(const FlarmTraffic &other) noexcept
   climb_rate_received = other.climb_rate_received;
   stealth = other.stealth;
   type = other.type;
+  if (name.empty() && other.HasName())
+    name.append(other.name);
 }

@@ -116,6 +116,11 @@ ParsePFLAA(NMEAInputLine &line, TrafficList &flarm, TimeStamp clock, RangeFilter
   line.Read(id_string, 16);
   traffic.id = FlarmId::Parse(id_string, nullptr);
 
+  traffic.name.clear();
+  char *ptr = strchr(&id_string[0],'!');
+  if (ptr)
+    traffic.name.append(ptr+1);
+
   Angle track;
   traffic.track_received = line.ReadBearing(track);
   if (!traffic.track_received) {
