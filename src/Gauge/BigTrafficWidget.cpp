@@ -927,8 +927,6 @@ TrafficWidget::UpdateButtons() noexcept
 
   windows->zoom_in_button.SetVisible(false);
   windows->zoom_out_button.SetVisible(false);
-  windows->previous_item_button.SetVisible(false);
-  windows->next_item_button.SetVisible(false);
 }
 
 void
