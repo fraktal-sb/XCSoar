@@ -24,7 +24,6 @@
 #include "Input/InputEvents.hpp"
 #include "Interface.hpp"
 #include "Asset.hpp"
-#include "UISettings.hpp"
 #include "ui/canvas/Color.hpp"
 
 /**
@@ -44,7 +43,6 @@ public:
   FlarmTrafficControl(const FlarmTrafficLook &look)
     :FlarmTrafficWindow(look, Layout::Scale(10),
                         Layout::GetMinimumControlHeight() + Layout::Scale(10)) {}
-  UISettings uisettings = CommonInterface::GetUISettings();
 
 protected:
   void CalcAutoZoom();
@@ -307,9 +305,9 @@ FlarmTrafficControl::PaintTaskDirection(Canvas &canvas) const
   };
 
   PolygonRotateShift(arrow, radar_renderer.GetCenter(),
-                     task_direction - (enable_north_up ?
-                                       Angle::Zero() : heading),
-                     Layout::FastScale(100u));
+                      task_direction - (enable_north_up ?
+                                        Angle::Zero() : heading),
+                      Layout::FastScale(100u));
 
   // Draw the arrow
   canvas.DrawPolygon(arrow, 7);
@@ -542,7 +540,7 @@ FlarmTrafficControl::PaintTrafficInfo(Canvas &canvas) const
   canvas.SetBackgroundTransparent();
 
   // Climb Rate
-  if (!WarningMode() && traffic.climb_rate_avg30s_available && !uisettings.show_menu_button)
+  if (!WarningMode() && traffic.climb_rate_avg30s_available)
     PaintClimbRate(canvas, rc, traffic.climb_rate_avg30s);
 
   // Distance
@@ -563,9 +561,9 @@ FlarmTrafficControl::OnPaint(Canvas &canvas) noexcept
 {
   canvas.Clear(look.background_color);
 
+  PaintTaskDirection(canvas);
   FlarmTrafficWindow::Paint(canvas);
   PaintTrafficInfo(canvas);
-  PaintTaskDirection(canvas);
 }
 
 void
@@ -924,9 +922,6 @@ TrafficWidget::UpdateButtons() noexcept
   windows->previous_item_button.SetEnabled(unlocked && two_or_more);
   windows->next_item_button.SetEnabled(unlocked && two_or_more);
   windows->details_button.SetEnabled(unlocked && not_empty);
-
-  windows->zoom_in_button.SetVisible(false);
-  windows->zoom_out_button.SetVisible(false);
 }
 
 void
@@ -952,7 +947,7 @@ TrafficWidget::Show(const PixelRect &rc) noexcept
   UpdateLayout();
 
   /* show the "Close" button only if this is a "special" page */
-  windows->close_button.SetVisible(false);
+  windows->close_button.SetVisible(CommonInterface::GetUIState().pages.special_page.IsDefined());
 
   CommonInterface::GetLiveBlackboard().AddListener(*this);
 }
