@@ -24,7 +24,6 @@
 #include "Input/InputEvents.hpp"
 #include "Interface.hpp"
 #include "Asset.hpp"
-#include "ui/canvas/Color.hpp"
 
 /**
  * A Window which renders FLARM traffic, with user interaction.
@@ -305,9 +304,9 @@ FlarmTrafficControl::PaintTaskDirection(Canvas &canvas) const
   };
 
   PolygonRotateShift(arrow, radar_renderer.GetCenter(),
-                      task_direction - (enable_north_up ?
-                                        Angle::Zero() : heading),
-                      Layout::FastScale(100u));
+                     task_direction - (enable_north_up ?
+                                       Angle::Zero() : heading),
+                     Layout::FastScale(100u));
 
   // Draw the arrow
   canvas.DrawPolygon(arrow, 7);
@@ -540,7 +539,7 @@ FlarmTrafficControl::PaintTrafficInfo(Canvas &canvas) const
   canvas.SetBackgroundTransparent();
 
   // Climb Rate
-  if (!WarningMode() && traffic.climb_rate_avg30s_available)
+  if (!WarningMode() && traffic.climb_rate_avg30s_available && !CommonInterface::GetUISettings().show_menu_button)
     PaintClimbRate(canvas, rc, traffic.climb_rate_avg30s);
 
   // Distance
