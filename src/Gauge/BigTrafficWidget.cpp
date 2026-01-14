@@ -916,11 +916,11 @@ TrafficWidget::UpdateButtons() noexcept
   const bool not_empty = !traffic.IsEmpty();
   const bool two_or_more = traffic.GetActiveTrafficCount() >= 2;
 
-  windows->zoom_in_button.SetEnabled(unlocked && windows->view.CanZoomIn());
-  windows->zoom_out_button.SetEnabled(unlocked && windows->view.CanZoomOut());
   windows->previous_item_button.SetEnabled(unlocked && two_or_more);
   windows->next_item_button.SetEnabled(unlocked && two_or_more);
   windows->details_button.SetEnabled(unlocked && not_empty);
+  windows->zoom_in_button.SetVisible(false);
+  windows->zoom_out_button.SetVisible(false);
 }
 
 void
@@ -946,7 +946,7 @@ TrafficWidget::Show(const PixelRect &rc) noexcept
   UpdateLayout();
 
   /* show the "Close" button only if this is a "special" page */
-  windows->close_button.SetVisible(CommonInterface::GetUIState().pages.special_page.IsDefined());
+  windows->close_button.SetVisible(false);
 
   CommonInterface::GetLiveBlackboard().AddListener(*this);
 }
