@@ -181,8 +181,9 @@ UpdateInfoBoxNextDistance(InfoBoxData &data) noexcept
   data.SetValueColor(task_stats.inside_oz ? 3 : 0);
 
   if (basic.track_available) {
-    Angle bd = vector_remaining.bearing - basic.track;
-    data.SetCommentFromBearingDifference(bd);
+    char dist[9];
+    sprintf(dist, "%5.1f mi", vector_remaining.distance/1000/1.609);
+    data.SetComment(dist);
   } else
     data.SetCommentInvalid();
 }
