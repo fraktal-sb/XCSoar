@@ -167,6 +167,7 @@ $(TARGET_OUTPUT_DIR)/KoboRoot.tgz: $(XCSOAR_BIN) \
 	$(Q)install -m 0755 -d $(@D)/KoboRoot/etc/udev/rules.d $(@D)/KoboRoot/opt/xcsoar/bin $(@D)/KoboRoot/opt/xcsoar/lib/kernel $(@D)/KoboRoot/opt/xcsoar/share/fonts
 	$(Q)install -m 0755 $(XCSOAR_BIN) $(KOBO_MENU_BIN) $(KOBO_POWER_OFF_BIN) $(topdir)/kobo/rcS $(@D)/KoboRoot/opt/xcsoar/bin
 	$(Q)install -m 0755 --strip --strip-program=$(STRIP) $(THIRDPARTY_TOOL_FILES) $(@D)/KoboRoot/opt/xcsoar/bin
+	$(Q)install -m 0755 /home/josef/Schreibtisch/DEV/XCSoarDevelopment/fb2png/fb2png $(@D)/KoboRoot/opt/xcsoar/bin
 	$(Q)if test -f $(KOBO_KERNEL_DOWNLOAD); then install -T -m 0644 $(KOBO_KERNEL_DOWNLOAD) $(@D)/KoboRoot/opt/xcsoar/lib/kernel/uImage.kobo; fi
 	$(Q)if test -f $(KOBOOTG_KERNEL_DOWNLOAD); then install -T -m 0644 $(KOBOOTG_KERNEL_DOWNLOAD) $(@D)/KoboRoot/opt/xcsoar/lib/kernel/uImage.otg; fi
 	$(Q)if test -f $(GLOHD_KERNEL_DOWNLOAD); then install -T -m 0644 $(GLOHD_KERNEL_DOWNLOAD) $(@D)/KoboRoot/opt/xcsoar/lib/kernel/uImage.glohd; fi
