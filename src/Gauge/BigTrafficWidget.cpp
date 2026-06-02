@@ -306,7 +306,7 @@ FlarmTrafficControl::PaintTaskDirection(Canvas &canvas) const
                      task_direction - (enable_north_up ?
                                        Angle::Zero() : heading),
                      scale);
-
+  canvas.Select(look.radar_brush);
   canvas.DrawPolygon(arrow, BestCruiseArrowRenderer::arrow_size);
 }
 
@@ -535,10 +535,6 @@ FlarmTrafficControl::PaintTrafficInfo(Canvas &canvas) const
   }
 
   canvas.SetBackgroundTransparent();
-
-  // Climb Rate
-  if (!WarningMode() && traffic.climb_rate_avg30s_available)
-    PaintClimbRate(canvas, rc, traffic.climb_rate_avg30s);
 
   // Distance
   PaintDistance(canvas, rc, traffic.distance);
