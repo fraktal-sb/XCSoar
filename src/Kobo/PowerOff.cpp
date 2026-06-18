@@ -72,10 +72,10 @@ DrawBanner(Canvas &canvas, PixelRect &rc)
   canvas.DrawText({x, rc.top + int(banner_height - normal_font.GetHeight()) / 2},
                   website);
 
-  char comment[30] = "powered off";   
+  char comment[30] = "powered off";
   const auto power_info = Power::GetInfo();
   if (power_info.battery.remaining_percent) {
-    snprintf ( comment+strlen(comment), 30-strlen(comment), " - battery %d%%", *power_info.battery.remaining_percent);  
+    snprintf ( comment+strlen(comment), 30-strlen(comment), " - battery %d%%", *power_info.battery.remaining_percent);
   }
 
   canvas.DrawText({rc.right - (int)canvas.CalcTextWidth(comment) - padding, rc.top + padding},
@@ -203,8 +203,11 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char **argv)
 
   /* now we can power off the Kobo; the picture remains on the
      screen */
-  if (DetectKoboModel() == KoboModel::GLO_HD)
-    //The GloHD needs -f to not clear screen
+  const auto model = DetectKoboModel();
+
+  if (model == KoboModel::GLO ||
+      model == KoboModel::GLO_HD ||
+      model == KoboModel::TOUCH)
     execl("/sbin/poweroff", "poweroff", "-f", nullptr);
   else
     execl("/sbin/poweroff", "poweroff", nullptr);

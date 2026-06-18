@@ -479,9 +479,9 @@ static constexpr MetaData meta_data[] = {
   {
     Group::TIME,
     N_("Time local"),
-    N_("Time loc"),
-    N_("GPS time expressed in local time zone."),
-    IBFHelper<InfoBoxContentTimeLocal>::Create,
+    N_("Time loc/SS"),
+    N_("GPS time expressed in local time zone / sunset time."),
+    UpdateInfoBoxTimeLocal,
   },
 
   // e_TimeUTC
@@ -919,8 +919,8 @@ static constexpr MetaData meta_data[] = {
   {
     Group::WAYPOINT,
     N_("Next time to go (ground speed)"),
-    N_("WP ETE VMG"),
-    N_("Estimated time required to reach next waypoint, assuming current ground speed is maintained."),
+    N_("WP ETE/A"),
+    N_("Estimated time required to reach next waypoint / Arrival time at next waypoint, assuming current ground speed is maintained."),
     IBFHelper<InfoBoxContentNextETEVMG>::Create,
   },
 
