@@ -20,6 +20,9 @@ enum Mode {
 };
 
 void
+KoboScreenshot() noexcept;
+
+void
 ProcessTimer() noexcept;
 
 void
@@ -228,6 +231,8 @@ void eventUploadIGCFile(const char *misc);
 void eventOrientationCruise(const char *misc);
 void eventOrientationCircling(const char *misc);
 void eventDistanceRings(const char *misc);
+void eventPowerOff(const char *misc);
+void eventReboot(const char *misc);
 // -------
 
 } // namespace InputEvents
