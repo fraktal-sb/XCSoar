@@ -43,6 +43,10 @@ https://xcsoar.readthedocs.io/en/latest/input_events.html
 #include "Menu/MenuBar.hpp"
 #include "MapWindow/GlueMapWindow.hpp"
 #include "Screen/Layout.hpp"
+#include <fcntl.h>
+#include "Message.hpp"
+#include "Formatter/TimeFormatter.hpp"
+#include "Kobo/System.hpp"
 
 #ifdef KOBO
 #include "ui/event/KeyCode.hpp"
@@ -98,6 +102,40 @@ static void
 processGo(unsigned event_id) noexcept;
 
 } // namespace InputEvents
+
+void
+InputEvents::KoboScreenshot() noexcept
+{
+  char date_buffer[32];
+  char time_buffer[32];
+  char outFileName[128];
+  char cmdfbgrab[256];
+
+  FormatISO8601(date_buffer,BrokenDate::TodayUTC());
+  BrokenTime time = BrokenDateTime::NowUTC();
+  sprintf(time_buffer,"%02u-%02u-%02u",time.hour,time.minute,time.second);
+  sprintf(&outFileName[0],"/mnt/onboard/%s-%s-screen.png",date_buffer,time_buffer);
+
+  sprintf(&cmdfbgrab[0],"/opt/xcsoar/bin/fb2png -s 10 %s&",outFileName);
+  system(cmdfbgrab);
+  Message::AddMessage("Screenshot in 10 seconds");
+}
+
+void
+InputEvents::eventPowerOff([[maybe_unused]] const char *mode)
+{
+#ifdef KOBO
+  KoboPowerOff();
+#endif
+}
+
+void
+InputEvents::eventReboot([[maybe_unused]] const char *mode)
+{
+#ifdef KOBO
+  KoboReboot();
+#endif
+}
 
 static InputConfig input_config;
 
@@ -337,7 +375,9 @@ InputEvents::ProcessKey(Mode mode, unsigned key_code) noexcept
     /* the Kobo power button opens the main menu */
     key_code = KEY_MENU;
 #else
-  // TODO: check the console key code
+  if (key_code == KEY_POWER) {
+      InputEvents::KoboScreenshot();
+  }
 #endif
 #endif
 

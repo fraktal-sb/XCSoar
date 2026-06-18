@@ -10794,7 +10794,7 @@ msgid "Airspace Labels"
 msgstr "Luftraum-Beschriftungen"
 
 msgid "Data Management"
-msgstr "Datenverwaltung"
+msgstr "Daten Verwaltung"
 
 msgid "NOTAMs"
 msgstr "NOTAMs"

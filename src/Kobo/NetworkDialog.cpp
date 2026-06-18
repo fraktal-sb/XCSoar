@@ -16,7 +16,7 @@
 static const char *
 GetWifiToggleCaption() noexcept
 {
-  return IsKoboWifiOn() ? _("WiFi Off") : _("WiFi On");
+  return IsKoboWifiOn() ? _("WiFi Off") : _("WiFi On + Telnet + Ftp");
 }
 
 class NetworkWidget final
@@ -73,19 +73,17 @@ NetworkWidget::Prepare([[maybe_unused]] ContainerWindow &parent, [[maybe_unused]
     }
   });
 
-  AddButton("Telnet server", [](){ KoboRunTelnetd(); });
-
-  AddButton("Ftp server", [](){ KoboRunFtpd(); });
-
   UpdateButtons();
 }
 
 void
 NetworkWidget::ToggleWifi() noexcept
 {
-  if (!IsKoboWifiOn())
+  if (!IsKoboWifiOn()) {
     KoboWifiOn();
-  else
+    KoboRunTelnetd();
+    KoboRunFtpd();
+  } else
     KoboWifiOff();
 
   UpdateButtons();
