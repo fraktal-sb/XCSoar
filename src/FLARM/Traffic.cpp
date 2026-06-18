@@ -46,7 +46,7 @@ static constexpr const char *acTypes[] = {
   "Airship",
   "UAV",
   "Unknown",
-  "StaticObject" 
+  "StaticObject"
 };
 
 const char *
