@@ -78,7 +78,7 @@ bool
 KoboReboot()
 {
 #ifdef KOBO
-  return Run("/sbin/reboot");
+  execl("/sbin/reboot", "reboot", "-f", nullptr);
 #else
   return false;
 #endif
@@ -265,8 +265,10 @@ ApplyKoboWifiAutoOn()
 {
 #ifdef KOBO
   if (IsKoboWifiAutoOn()) {
-    if (!IsKoboWifiOn())
+    if (!IsKoboWifiOn()){
       KoboWifiOn();
+      KoboRunFtpd();
+    }
   } else if (IsKoboWifiOn()) {
     KoboWifiOff();
   }
@@ -343,7 +345,7 @@ KoboWifiOn()
 
   Start("/sbin/udhcpc", "-S", "-i", interface,
         "-s", "/etc/udhcpc.d/default.script",
-        "-t15", "-T10", "-A3", "-f", "-q");
+        "-t15", "-T10", "-A3", "-f");
 
   return true;
 #else
@@ -450,6 +452,7 @@ KoboRunFtpd()
 bool
 KoboCanChangeBacklightBrightness()
 {
+  return false;
 #ifdef KOBO
   switch (DetectKoboModel()) {
   case KoboModel::GLO_HD:
@@ -567,11 +570,11 @@ KoboGetBacklightColourFile() noexcept
     return nullptr;
   }
   if (files_to_check[0] && File::Exists(Path(colour_files[0])))
-    return colour_files[0]; 
+    return colour_files[0];
   if (files_to_check[1] && File::Exists(Path(colour_files[1])))
-    return colour_files[1]; 
+    return colour_files[1];
   if (files_to_check[2] && File::Exists(Path(colour_files[2])))
-    return colour_files[2]; 
+    return colour_files[2];
 #endif
   return nullptr;
 }

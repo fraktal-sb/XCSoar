@@ -34,7 +34,7 @@ FlarmTrafficLook::InitialisePensAndFonts() noexcept
   info_labels_font.Load(FontDescription(Layout::FontScale(12), true));
   info_values_font.Load(FontDescription(Layout::FontScale(16)));
   info_units_font.Load(FontDescription(Layout::FontScale(8)));
-  call_sign_font.Load(FontDescription(Layout::FontScale(24), true));
+  call_sign_font.Load(FontDescription(Layout::FontScale(22), true));
 }
 
 void
