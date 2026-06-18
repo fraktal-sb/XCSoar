@@ -11,6 +11,8 @@
 #include "FLARM/Friends.hpp"
 #include "MapSettings.hpp"
 #include "util/StringCompare.hxx"
+#include "Formatter/Units.hpp"
+#include "Units/Units.hpp"
 
 #include <cassert>
 
@@ -49,19 +51,25 @@ DrawFlarmTraffic(Canvas &canvas, const WindowProjection &projection,
 
     if (show_name) {
       auto sc_name = sc;
-      sc_name.y -= layout.name_offset_y;
-
-      TextInBox(canvas, traffic.name, sc_name,
+      sc_name.y -= Layout::Scale(20);
+      size_t len = traffic.name.length();
+      if (len >= 2) {
+      TextInBox(canvas, traffic.name.c_str() + len - 2, sc_name,
                 mode, projection.GetScreenRect());
+      }
     }
 
-    if (!fading && traffic.climb_rate_avg30s >= 0.1) {
-      auto sc_av = sc;
-      sc_av.y += layout.climb_offset_y;
+    if (!fading) {
+      char label_rla[12];
 
-      TextInBox(canvas,
-                FormatUserVerticalSpeed(traffic.climb_rate_avg30s, false),
-                sc_av, mode,
+      sprintf(label_rla, " %+d",
+              static_cast<int>(
+                  trunc(Units::ToUserAltitude(traffic.relative_altitude) / 100)));
+
+      auto sc_av = sc;
+      sc_av.y -= Layout::Scale(10);
+
+      TextInBox(canvas, label_rla, sc_av, mode,
                 projection.GetScreenRect());
     }
   }

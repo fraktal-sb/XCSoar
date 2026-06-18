@@ -15,7 +15,7 @@ umask 022
 # mount the data partition
 /bin/dosfsck -a -w /dev/mmcblk0p3
 /bin/mkdir -p /mnt/onboard
-/bin/mount -t vfat -o iocharset=utf8 /dev/mmcblk0p3 /mnt/onboard
+/bin/mount -t vfat -o iocharset=utf8,uid=14,gid=50,umask=0022 /dev/mmcblk0p3 /mnt/onboard
 /bin/rm -rf /mnt/onboard/fsck* /mnt/onboard/FSCK*
 
 # launch the original Kobo init script if:
